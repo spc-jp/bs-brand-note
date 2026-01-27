@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BS Brand Note | 社長の想いを、事業の武器に。</title>
+    <!-- Tailwind CSS (Design System) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts (Noto Sans JP) -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Noto Sans JP"', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0ea5e9',
+                            600: '#0284c7', // Trust Blue
+                            700: '#0369a1',
+                            900: '#0c4a6e',
+                        },
+                        accent: {
+                            500: '#f59e0b', // Action Orange
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+            /* Desktop: Prevent whole page scroll, handle in columns */
+            height: 100vh;
+            overflow: hidden; 
+        }
+        
+        /* Mobile: Allow normal scrolling */
+        @media (max-width: 1024px) {
+            body {
+                height: auto;
+                overflow: auto;
+            }
+        }
+        
+        .card-shadow {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card-shadow:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Improved Scrollbar Styling */
+        .custom-scrollbar {
+            scrollbar-width: thin;
+            scrollbar-color: #cbd5e1 transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 10px; /* Slightly wider for easier grabbing */
+            height: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent; 
+            margin: 4px 0;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 6px;
+            border: 2px solid rgba(0,0,0,0); /* Creates padding effect */
+            background-clip: padding-box;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+            border: 2px solid rgba(0,0,0,0);
+            background-clip: padding-box;
+        }
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #475569;
+        }
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+        
+        /* Tab Styles */
+        .tab-active {
+            background-color: #0284c7;
+            color: #ffffff;
+            font-weight: 700;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transform: translateY(-1px);
+        }
+        .dark .tab-active {
+            background-color: #0ea5e9;
+            color: #ffffff;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+        }
+        .tab-inactive {
+            color: #64748b;
+            font-weight: 500;
+            background-color: transparent;
+        }
+        .tab-inactive:hover {
+            color: #334155;
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+        .dark .tab-inactive:hover {
+            color: #cbd5e1;
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .toast {
+            visibility: hidden;
+            min-width: 250px;
+            margin-left: -125px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 8px;
+            padding: 16px;
+            position: fixed;
+            z-index: 50;
+            left: 50%;
+            bottom: 30px;
+            font-size: 14px;
+            opacity: 0;
+            transition: opacity 0.3s, bottom 0.3s;
+        }
+        .toast.show {
+            visibility: visible;
+            opacity: 1;
+            bottom: 50px;
+        }
+        .ng-badge {
+            background-color: #fee2e2;
+            color: #ef4444;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            margin-right: 4px;
+            margin-bottom: 4px;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 flex flex-col h-screen overflow-hidden">
+
+    <!-- Header -->
+    <header class="bg-brand-900 text-white shadow-lg sticky top-0 z-40 flex-none h-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <!-- Logo Image: bs.jpg -->
+                <img src="bs.jpg" alt="BS Logo" class="h-10 w-auto rounded bg-white p-0.5 shadow-sm">
+                
+                <div>
+                    <h1 class="font-bold text-lg leading-tight">BS Brand Note</h1>
+                    <p class="text-[10px] text-brand-100 opacity-90 leading-tight">社長の想いを、事業の武器に。</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <button onclick="toggleDarkMode()" class="p-2 rounded-full hover:bg-white/10 transition" title="ダークモード切替">
+                    <i data-lucide="moon" class="h-5 w-5"></i>
+                </button>
+                <button onclick="openSettings()" class="flex items-center gap-1 bg-white/10 hover:bg-white/20 text-white px-3 py-1.5 rounded-full transition text-xs font-bold" title="設定">
+                    <i data-lucide="settings" class="h-4 w-4"></i> 設定・基本情報
+                </button>
+                <button onclick="openHelp()" class="hidden sm:flex bg-accent-500 hover:bg-amber-600 text-white text-xs font-bold py-2 px-4 rounded-full transition items-center gap-1 shadow-md">
+                    <i data-lucide="help-circle" class="h-4 w-4"></i> 使い方
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-[1600px] w-full mx-auto p-4 sm:p-6 lg:p-8 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 h-[calc(100vh-4rem)] overflow-hidden">
+        
+        <!-- Left Column: Inputs (Improved Scroll) -->
+        <!-- Changed to h-full relative to main container, added custom-scrollbar class -->
+        <section class="lg:col-span-5 flex flex-col gap-6 lg:h-full lg:overflow-y-auto custom-scrollbar pr-2 pb-24">
+            <div class="flex justify-between items-center mb-1 sticky top-0 bg-slate-50 dark:bg-slate-900 z-10 py-2">
+                <h2 class="text-xl font-bold flex items-center gap-2 text-brand-700 dark:text-brand-400">
+                    <i data-lucide="pen-tool" class="h-5 w-5"></i> 思考の整理（入力）
+                </h2>
+                <div class="text-xs text-slate-500 font-medium" id="saveStatus">自動保存中...</div>
+            </div>
+
+            <!-- Tone Selector -->
+            <div class="bg-white dark:bg-slate-800 p-4 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 flex-shrink-0">
+                <label class="text-xs font-bold text-slate-500 uppercase mb-2 block">出力トーン（語り口）</label>
+                <div class="flex bg-slate-100 dark:bg-slate-900 rounded-lg p-1">
+                    <button class="tone-btn flex-1 py-2 text-sm rounded-md font-medium transition active-tone" data-tone="polite" onclick="setTone('polite')">丁寧・誠実</button>
+                    <button class="tone-btn flex-1 py-2 text-sm rounded-md font-medium transition text-slate-500" data-tone="passion" onclick="setTone('passion')">熱量・想い</button>
+                    <button class="tone-btn flex-1 py-2 text-sm rounded-md font-medium transition text-slate-500" data-tone="friendly" onclick="setTone('friendly')">親しみ・相談</button>
+                </div>
+            </div>
+
+            <!-- Section A: Passion -->
+            <details class="group bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden flex-shrink-0" open>
+                <summary class="flex justify-between items-center p-5 cursor-pointer bg-slate-50 dark:bg-slate-700/50 hover:bg-slate-100 transition">
+                    <h3 class="font-bold text-base text-slate-700 dark:text-slate-200">A. 社長の想い・ストーリー</h3>
+                    <i data-lucide="chevron-down" class="h-5 w-5 text-slate-400 group-open:rotate-180 transition"></i>
+                </summary>
+                <div class="p-5 space-y-5">
+                    <div>
+                        <label class="block text-sm font-bold text-slate-600 dark:text-slate-400 mb-2">なぜこの事業をやっている？（原体験）</label>
+                        <!-- Preset Select -->
+                        <div class="relative">
+                            <select id="select_story_why" class="w-full appearance-none bg-brand-50 dark:bg-slate-700 border border-brand-200 dark:border-slate-600 rounded-lg py-2 px-3 mb-2 text-xs text-brand-700 dark:text-slate-300 outline-none transition hover:bg-brand-100 dark:hover:bg-slate-600 cursor-pointer font-medium" onchange="applyPreset('input_story_why', this.value)">
+                                <option value="">▼ 例文を選択して入力（クリックで反映）</option>
+                                <option value="中小企業には、&#13;&#10;それぞれの歴史があり、&#13;&#10;それぞれの事情があり、&#13;&#10;それぞれの“らしさ”があります。&#13;&#10;私たちは、&#13;&#10;&#13;&#10;その“らしさ”を壊すDXではなく、&#13;&#10;&#13;&#10;その“らしさ”を活かすDXを一緒に考えたい。&#13;&#10;ITが得意な会社だけが伸びる時代ではなく、&#13;&#10;&#13;&#10;ITが苦手な会社ほど、&#13;&#10;ちゃんと支えられる存在でありたい。">例文：その“らしさ”を活かすDX（中小企業支援）</option>
+                            </select>
+                            <i data-lucide="chevron-down" class="absolute right-3 top-2.5 h-4 w-4 text-brand-400 pointer-events-none"></i>
+                        </div>
+                        <textarea id="input_story_why" rows="3" class="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-lg p-3 text-sm focus:ring-2 focus:ring-brand-500 outline-none auto-resize leading-relaxed" placeholder="ここに自由に入力することもできます。"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-600 dark:text-slate-400 mb-2">大切にしている価値観</label>
+                        <!-- Preset Select -->
+                        <div class="relative">
+                            <select id="select_values" class="w-full appearance-none bg-brand-50 dark:bg-slate-700 border border-brand-200 dark:border-slate-600 rounded-lg py-2 px-3 mb-2 text-xs text-brand-700 dark:text-slate-300 outline-none transition hover:bg-brand-100 dark:hover:bg-slate-600 cursor-pointer font-medium" onchange="applyPreset('input_values', this.value)">
+                                <option value="">▼ 例文を選択して入力（クリックで反映）</option>
+                                <option value="埼玉を拠点に、&#13;&#10;地域の中小企業と一緒に歩んできたことは&#13;&#10;私たちの誇りです。&#13;&#10;顔が見える距離感で、&#13;&#10;&#13;&#10;何かあればすぐ駆けつける。&#13;&#10;地域の会社が元気になることが、&#13;&#10;&#13;&#10;この街の未来をつくると&#13;&#10;本気で思っています。">例文：地域密着・伴走支援（埼玉拠点）</option>
+                            </select>
+                            <i data-lucide="chevron-down" class="absolute right-3 top-2.5 h-4 w-4 text-brand-400 pointer-events-none"></i>
+                        </div>
+                        <textarea id="input_values" rows="3" class="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-lg p-3 text-sm focus:ring-2 focus:ring-brand-500 outline-none auto-resize leading-relaxed" placeholder="例：現場主義、わかりやすい言葉で伝える"></textarea>
+                    </div>
+                </div>
+            </details>
+
+            <!-- Section B: Strengths -->
+            <details class="group bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden flex-shrink-0">
+                <summary class="flex justify-between items-center p-5 cursor-pointer bg-slate-50 dark:bg-slate-700/50 hover:bg-slate-100 transition">
+                    <h3 class="font-bold text-base text-slate-700 dark:text-slate-200">B. 会社の強み</h3>
+                    <i data-lucide="chevron-down" class="h-5 w-5 text-slate-400 group-open:rotate-180 transition"></i>
+                </summary>
+                <div class="p-5 space-y-5">
+                    <div class="grid grid-cols-2 gap-3">
+                        <label class="flex items-center space-x-2 text-sm p-2 rounded border border-transparent hover:bg-brand-50 hover:border-brand-200 dark:hover:bg-slate-700 cursor-pointer transition">
+                            <input type="checkbox" class="strength-check text-brand-600 focus:ring-brand-500 rounded h-4 w-4" value="地域密着">
+                            <span>地域密着</span>
+                        </label>
+                        <label class="flex items-center space-x-2 text-sm p-2 rounded border border-transparent hover:bg-brand-50 hover:border-brand-200 dark:hover:bg-slate-700 cursor-pointer transition">
+                            <input type="checkbox" class="strength-check text-brand-600 focus:ring-brand-500 rounded h-4 w-4" value="一貫対応">
+                            <span>一貫対応</span>
+                        </label>
+                        <label class="flex items-center space-x-2 text-sm p-2 rounded border border-transparent hover:bg-brand-50 hover:border-brand-200 dark:hover:bg-slate-700 cursor-pointer transition">
+                            <input type="checkbox" class="strength-check text-brand-600 focus:ring-brand-500 rounded h-4 w-4" value="初心者にも優しい">
+                            <span>ITが苦手でも安心</span>
+                        </label>
+                        <label class="flex items-center space-x-2 text-sm p-2 rounded border border-transparent hover:bg-brand-50 hover:border-brand-200 dark:hover:bg-slate-700 cursor-pointer transition">
+                            <input type="checkbox" class="strength-check text-brand-600 focus:ring-brand-500 rounded h-4 w-4" value="スピード対応">
+                            <span>スピード対応</span>
+                        </label>
+                        <label class="flex items-center space-x-2 text-sm p-2 rounded border border-transparent hover:bg-brand-50 hover:border-brand-200 dark:hover:bg-slate-700 cursor-pointer transition">
+                            <input type="checkbox" class="strength-check text-brand-600 focus:ring-brand-500 rounded h-4 w-4" value="伴走型">
+                            <span>伴走型サポート</span>
+                        </label>
+                        <label class="flex items-center space-x-2 text-sm p-2 rounded border border-transparent hover:bg-brand-50 hover:border-brand-200 dark:hover:bg-slate-700 cursor-pointer transition">
+                            <input type="checkbox" class="strength-check text-brand-600 focus:ring-brand-500 rounded h-4 w-4" value="実績豊富">
+                            <span>実績が豊富</span>
+                        </label>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-600 dark:text-slate-400 mb-2">独自の強み（自由記述）</label>
+                        <textarea id="input_strength_custom" rows="2" class="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-lg p-3 text-sm focus:ring-2 focus:ring-brand-500 outline-none auto-resize" placeholder="例：元銀行員が資金繰りまでサポートします"></textarea>
+                    </div>
+                </div>
+            </details>
+
+            <!-- Section C: Target -->
+            <details class="group bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden flex-shrink-0">
+                <summary class="flex justify-between items-center p-5 cursor-pointer bg-slate-50 dark:bg-slate-700/50 hover:bg-slate-100 transition">
+                    <h3 class="font-bold text-base text-slate-700 dark:text-slate-200">C. ターゲット</h3>
+                    <i data-lucide="chevron-down" class="h-5 w-5 text-slate-400 group-open:rotate-180 transition"></i>
+                </summary>
+                <div class="p-5 space-y-3">
+                    <div class="space-y-3">
+                        <label class="flex items-center space-x-3 text-sm cursor-pointer p-2 hover:bg-slate-50 rounded transition">
+                            <input type="radio" name="target" value="ceo" class="text-brand-600 focus:ring-brand-500 h-4 w-4" checked>
+                            <span>中小企業の経営者（忙しい・孤独）</span>
+                        </label>
+                        <label class="flex items-center space-x-3 text-sm cursor-pointer p-2 hover:bg-slate-50 rounded transition">
+                            <input type="radio" name="target" value="admin" class="text-brand-600 focus:ring-brand-500 h-4 w-4">
+                            <span>総務・経理担当（業務過多）</span>
+                        </label>
+                        <label class="flex items-center space-x-3 text-sm cursor-pointer p-2 hover:bg-slate-50 rounded transition">
+                            <input type="radio" name="target" value="legacy" class="text-brand-600 focus:ring-brand-500 h-4 w-4">
+                            <span>IT・デジタルが苦手な企業</span>
+                        </label>
+                        <label class="flex items-center space-x-3 text-sm cursor-pointer p-2 hover:bg-slate-50 rounded transition">
+                            <input type="radio" name="target" value="growth" class="text-brand-600 focus:ring-brand-500 h-4 w-4">
+                            <span>補助金活用・DX検討企業</span>
+                        </label>
+                    </div>
+                </div>
+            </details>
+
+            <!-- Section D: SDGs -->
+            <details class="group bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden flex-shrink-0">
+                <summary class="flex justify-between items-center p-5 cursor-pointer bg-slate-50 dark:bg-slate-700/50 hover:bg-slate-100 transition">
+                    <h3 class="font-bold text-base text-slate-700 dark:text-slate-200">D. SDGs・社会貢献</h3>
+                    <i data-lucide="chevron-down" class="h-5 w-5 text-slate-400 group-open:rotate-180 transition"></i>
+                </summary>
+                <div class="p-5 space-y-5">
+                    <div>
+                        <label class="block text-sm font-bold text-slate-600 dark:text-slate-400 mb-2">注力する目標（番号を選択）</label>
+                        <div class="flex flex-wrap gap-2">
+                            <label class="cursor-pointer"><input type="checkbox" class="sdgs-check hidden peer" value="8"><span class="px-3 py-1.5 rounded-full bg-slate-100 dark:bg-slate-700 text-xs font-bold text-slate-600 dark:text-slate-300 peer-checked:bg-[#A21942] peer-checked:text-white transition shadow-sm">8.働きがい</span></label>
+                            <label class="cursor-pointer"><input type="checkbox" class="sdgs-check hidden peer" value="9"><span class="px-3 py-1.5 rounded-full bg-slate-100 dark:bg-slate-700 text-xs font-bold text-slate-600 dark:text-slate-300 peer-checked:bg-[#FD6925] peer-checked:text-white transition shadow-sm">9.産業基盤</span></label>
+                            <label class="cursor-pointer"><input type="checkbox" class="sdgs-check hidden peer" value="11"><span class="px-3 py-1.5 rounded-full bg-slate-100 dark:bg-slate-700 text-xs font-bold text-slate-600 dark:text-slate-300 peer-checked:bg-[#FD9D24] peer-checked:text-white transition shadow-sm">11.まちづくり</span></label>
+                            <label class="cursor-pointer"><input type="checkbox" class="sdgs-check hidden peer" value="17"><span class="px-3 py-1.5 rounded-full bg-slate-100 dark:bg-slate-700 text-xs font-bold text-slate-600 dark:text-slate-300 peer-checked:bg-[#19486A] peer-checked:text-white transition shadow-sm">17.パートナー</span></label>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-600 dark:text-slate-400 mb-2">実現したい未来</label>
+                        <textarea id="input_sdgs_future" rows="2" class="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-lg p-3 text-sm focus:ring-2 focus:ring-brand-500 outline-none auto-resize" placeholder="例：地域の企業がずっと存続できる社会"></textarea>
+                    </div>
+                </div>
+            </details>
+
+            <!-- Section E: Achievements -->
+            <details class="group bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden flex-shrink-0">
+                <summary class="flex justify-between items-center p-5 cursor-pointer bg-slate-50 dark:bg-slate-700/50 hover:bg-slate-100 transition">
+                    <h3 class="font-bold text-base text-slate-700 dark:text-slate-200">E. 実績・事例</h3>
+                    <i data-lucide="chevron-down" class="h-5 w-5 text-slate-400 group-open:rotate-180 transition"></i>
+                </summary>
+                <div class="p-5 space-y-5">
+                    <div>
+                        <label class="block text-sm font-bold text-slate-600 dark:text-slate-400 mb-2">代表的な事例・効果</label>
+                        <textarea id="input_case" rows="2" class="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-lg p-3 text-sm focus:ring-2 focus:ring-brand-500 outline-none auto-resize" placeholder="例：アナログ管理だった製造業様が、クラウド導入で残業時間を50%削減。"></textarea>
+                    </div>
+                </div>
+            </details>
+
+            <button onclick="generateAll()" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-4 px-6 rounded-xl shadow-lg shadow-brand-500/30 transition transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2 mt-4 lg:hidden flex-shrink-0">
+                <i data-lucide="wand-2" class="h-5 w-5"></i> 内容を反映して生成
+            </button>
+        </section>
+
+        <!-- Right Column: Outputs -->
+        <section class="lg:col-span-7 flex flex-col lg:h-full overflow-hidden">
+            <div class="flex justify-between items-center mb-4 flex-shrink-0">
+                <h2 class="text-xl font-bold flex items-center gap-2 text-slate-800 dark:text-white">
+                    <i data-lucide="monitor-up" class="h-5 w-5 text-accent-500"></i> 資産化アウトプット
+                </h2>
+                <button onclick="generateAll()" class="text-xs bg-slate-200 hover:bg-slate-300 text-slate-700 py-1.5 px-3 rounded-lg font-bold flex items-center gap-1 transition">
+                    <i data-lucide="rotate-cw" class="h-3 w-3"></i> リセット・再生成
+                </button>
+            </div>
+
+            <!-- Tabs -->
+            <div class="flex overflow-x-auto space-x-2 bg-slate-100 dark:bg-slate-800 p-2 rounded-xl mb-6 items-center flex-shrink-0 custom-scrollbar pb-3">
+                <button data-tab="web" class="tab-btn tab-active shrink-0 py-3 px-4 text-sm rounded-lg transition-all duration-200 text-center whitespace-nowrap" onclick="switchTab('web')">Web・HP用</button>
+                <button data-tab="sales" class="tab-btn tab-inactive shrink-0 py-3 px-4 text-sm rounded-lg transition-all duration-200 text-center whitespace-nowrap" onclick="switchTab('sales')">営業トーク</button>
+                <button data-tab="exhibition" class="tab-btn tab-inactive shrink-0 py-3 px-4 text-sm rounded-lg transition-all duration-200 text-center whitespace-nowrap" onclick="switchTab('exhibition')">展示会・チラシ</button>
+                <button data-tab="sns" class="tab-btn tab-inactive shrink-0 py-3 px-4 text-sm rounded-lg transition-all duration-200 text-center whitespace-nowrap" onclick="switchTab('sns')">SNS投稿</button>
+                <button data-tab="sdgs" class="tab-btn tab-inactive shrink-0 py-3 px-4 text-sm rounded-lg transition-all duration-200 text-center whitespace-nowrap" onclick="switchTab('sdgs')">SDGs宣言</button>
+            </div>
+
+            <!-- Output Container (Scrollable) -->
+            <div class="flex-grow overflow-y-auto pr-2 pb-24 custom-scrollbar space-y-6" id="outputContainer">
+                <!-- Content will be injected here by JS -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast shadow-xl">
+        <div class="flex items-center justify-center gap-2">
+            <i data-lucide="check-circle" class="h-5 w-5 text-green-400"></i>
+            <span>コピーしました！</span>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="fixed inset-0 bg-black/50 hidden z-50 flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl max-w-md w-full p-6 transform transition-all scale-100 h-[80vh] overflow-y-auto custom-scrollbar">
+            <div class="flex justify-between items-center mb-4 sticky top-0 bg-white dark:bg-slate-800 pb-2 z-10 border-b border-slate-100 dark:border-slate-700">
+                <h3 class="text-lg font-bold">設定・基本情報</h3>
+                <button onclick="closeModal('settingsModal')" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="h-6 w-6"></i></button>
+            </div>
+            
+            <div class="space-y-6">
+                <!-- Basic Info Section (Moved from Main) -->
+                <div class="bg-slate-50 dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+                    <h4 class="text-sm font-bold text-brand-600 dark:text-brand-400 mb-3 flex items-center gap-1"><i data-lucide="building-2" class="h-4 w-4"></i> 会社の基本情報</h4>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 mb-1">会社名</label>
+                            <input type="text" id="input_companyName" class="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-brand-500 outline-none" placeholder="例：株式会社ビジネスサポート">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 mb-1">所在地</label>
+                            <input type="text" id="input_location" class="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm outline-none" placeholder="例：東京都中央区">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 mb-1">事業内容</label>
+                            <textarea id="input_business" rows="2" class="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 text-sm outline-none" placeholder="例：中小企業のIT導入支援、業務改善コンサルティング"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- App Settings Section -->
+                <div>
+                    <h4 class="text-sm font-bold text-slate-700 dark:text-slate-300 mb-3 border-l-4 border-slate-300 pl-2">アプリ設定</h4>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 mb-1">文章の署名（フッター）</label>
+                            <input type="text" id="setting_sign" class="w-full bg-slate-50 dark:bg-slate-900 border rounded p-2 text-sm" value="株式会社ビジネスサポート">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 mb-1">自社URL</label>
+                            <input type="text" id="setting_url" class="w-full bg-slate-50 dark:bg-slate-900 border rounded p-2 text-sm" placeholder="https://example.com">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 mb-1">NGワード設定（カンマ区切り）</label>
+                            <textarea id="setting_ng" class="w-full bg-slate-50 dark:bg-slate-900 border rounded p-2 text-sm h-20">絶対,No.1,必ず,100%,業界初,完璧,唯一</textarea>
+                            <p class="text-[10px] text-red-500 mt-1">※誇大広告防止のため、これらの単語が含まれると警告を表示します。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt-2 sticky bottom-0 bg-white dark:bg-slate-800 pb-2">
+                    <button onclick="saveSettings(); closeModal('settingsModal')" class="w-full bg-brand-600 text-white py-3 rounded-lg font-bold hover:bg-brand-700 shadow-md">保存して閉じる</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help Modal -->
+    <div id="helpModal" class="fixed inset-0 bg-black/50 hidden z-50 flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl max-w-lg w-full p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold flex items-center gap-2"><i data-lucide="book-open" class="h-5 w-5 text-accent-500"></i> 使い方 3ステップ</h3>
+                <button onclick="closeModal('helpModal')" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="h-6 w-6"></i></button>
+            </div>
+            <div class="space-y-4 text-sm text-slate-600 dark:text-slate-300">
+                <div class="flex gap-3">
+                    <div class="bg-brand-100 text-brand-600 font-bold w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0">1</div>
+                    <div>
+                        <h4 class="font-bold text-slate-800 dark:text-white">まずは基本情報を設定</h4>
+                        <p>右上の「設定・基本情報」ボタンから、会社名や事業内容を入力してください。</p>
+                    </div>
+                </div>
+                <div class="flex gap-3">
+                    <div class="bg-brand-100 text-brand-600 font-bold w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0">2</div>
+                    <div>
+                        <h4 class="font-bold text-slate-800 dark:text-white">左側で思考を整理</h4>
+                        <p>社長の想い、強み、ターゲットなどを左側のエリアに入力していきます。</p>
+                    </div>
+                </div>
+                <div class="flex gap-3">
+                    <div class="bg-brand-100 text-brand-600 font-bold w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0">3</div>
+                    <div>
+                        <h4 class="font-bold text-slate-800 dark:text-white">自動生成＆コピー</h4>
+                        <p>入力内容に応じて右側に文章が生成されます。タブを切り替えて用途に合った文章をコピーしましょう。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Initialization ---
+        lucide.createIcons();
+
+        // --- State Management ---
+        let currentTab = 'web';
+        let currentTone = 'polite';
+        
+        const defaultData = {
+            companyName: '株式会社ビジネスサポート',
+            location: '東京都',
+            business: '中小企業支援、経営コンサルティング',
+            story_why: '素晴らしい技術を持つ中小企業が、伝え方を知らないだけで損をしている現状を変えたい。',
+            values: '「伴走」と「実利」',
+            strengths: ['地域密着', '伴走型サポート'],
+            strength_custom: '',
+            target: 'ceo', // ceo, admin, legacy, growth
+            sdgs: ['8', '9'],
+            sdgs_future: '地域の雇用を守り、次世代にバトンを繋ぐ',
+            case_study: '赤字続きだった製造業が、工程見直しによりV字回復を達成。',
+            settings: {
+                sign: '株式会社ビジネスサポート',
+                url: '',
+                ng: '絶対,No.1,必ず,100%,業界初,完璧,唯一'
+            }
+        };
+
+        // --- Logic: Data Handling ---
+        function loadData() {
+            const saved = localStorage.getItem('bs_brand_note_data');
+            if (saved) {
+                const data = JSON.parse(saved);
+                // Apply Inputs (Basic Info now in Modal)
+                document.getElementById('input_companyName').value = data.companyName || '';
+                document.getElementById('input_location').value = data.location || '';
+                document.getElementById('input_business').value = data.business || '';
+                
+                // Other Inputs
+                document.getElementById('input_story_why').value = data.story_why || '';
+                document.getElementById('input_values').value = data.values || '';
+                document.getElementById('input_strength_custom').value = data.strength_custom || '';
+                document.getElementById('input_sdgs_future').value = data.sdgs_future || '';
+                document.getElementById('input_case').value = data.case_study || '';
+                
+                // Radio Target
+                const targetRadio = document.querySelector(`input[name="target"][value="${data.target}"]`);
+                if (targetRadio) targetRadio.checked = true;
+
+                // Checkboxes Strength
+                document.querySelectorAll('.strength-check').forEach(cb => {
+                    cb.checked = data.strengths.includes(cb.value);
+                });
+
+                // Checkboxes SDGs
+                document.querySelectorAll('.sdgs-check').forEach(cb => {
+                    cb.checked = data.sdgs.includes(cb.value);
+                });
+
+                // Settings
+                if (data.settings) {
+                    document.getElementById('setting_sign').value = data.settings.sign || '';
+                    document.getElementById('setting_url').value = data.settings.url || '';
+                    document.getElementById('setting_ng').value = data.settings.ng || '';
+                }
+            } else {
+                // Load defaults if empty
+                document.getElementById('input_companyName').value = defaultData.companyName;
+                generateAll(); // Initial Gen
+            }
+        }
+
+        function saveData() {
+            const strengths = Array.from(document.querySelectorAll('.strength-check:checked')).map(cb => cb.value);
+            const sdgs = Array.from(document.querySelectorAll('.sdgs-check:checked')).map(cb => cb.value);
+            const target = document.querySelector('input[name="target"]:checked')?.value || 'ceo';
+
+            const data = {
+                companyName: document.getElementById('input_companyName').value,
+                location: document.getElementById('input_location').value,
+                business: document.getElementById('input_business').value,
+                story_why: document.getElementById('input_story_why').value,
+                values: document.getElementById('input_values').value,
+                strengths: strengths,
+                strength_custom: document.getElementById('input_strength_custom').value,
+                target: target,
+                sdgs: sdgs,
+                sdgs_future: document.getElementById('input_sdgs_future').value,
+                case_study: document.getElementById('input_case').value,
+                settings: {
+                    sign: document.getElementById('setting_sign').value,
+                    url: document.getElementById('setting_url').value,
+                    ng: document.getElementById('setting_ng').value
+                }
+            };
+            
+            localStorage.setItem('bs_brand_note_data', JSON.stringify(data));
+            
+            // Show saving status
+            const status = document.getElementById('saveStatus');
+            status.textContent = '保存しました';
+            setTimeout(() => status.textContent = '自動保存中...', 2000);
+        }
+
+        // --- Logic: Generator Core ---
+        
+        // Helper: Get Tone Suffix
+        function t(polite, passion, friendly) {
+            if (currentTone === 'passion') return passion;
+            if (currentTone === 'friendly') return friendly;
+            return polite;
+        }
+
+        function getInputs() {
+            const strengths = Array.from(document.querySelectorAll('.strength-check:checked')).map(cb => cb.value);
+            if(document.getElementById('input_strength_custom').value) {
+                strengths.push(document.getElementById('input_strength_custom').value);
+            }
+            
+            return {
+                name: document.getElementById('input_companyName').value || '当社',
+                loc: document.getElementById('input_location').value,
+                biz: document.getElementById('input_business').value,
+                why: document.getElementById('input_story_why').value,
+                val: document.getElementById('input_values').value,
+                str: strengths,
+                target: document.querySelector('input[name="target"]:checked')?.value || 'ceo',
+                sdgs: Array.from(document.querySelectorAll('.sdgs-check:checked')).map(cb => cb.value),
+                future: document.getElementById('input_sdgs_future').value,
+                case: document.getElementById('input_case').value,
+                sign: document.getElementById('setting_sign').value,
+                url: document.getElementById('setting_url').value,
+                ngList: document.getElementById('setting_ng').value.split(',').map(s => s.trim()).filter(s => s)
+            };
+        }
+
+        function checkNG(text, ngList) {
+            const found = [];
+            ngList.forEach(word => {
+                if (text.includes(word)) found.push(word);
+            });
+            return found;
+        }
+
+        // --- Generators ---
+
+        function genWeb(d) {
+            let strList = d.str.length > 0 ? d.str.join('、') : '独自のノウハウ';
+            let targetCall = '';
+            
+            if(d.target === 'ceo') targetCall = '経営者の皆様、孤独な決断をサポートします。';
+            if(d.target === 'admin') targetCall = 'バックオフィスの負担を劇的に軽減します。';
+            if(d.target === 'legacy') targetCall = '「ITは難しい」と諦めていませんか？';
+            if(d.target === 'growth') targetCall = '次なる成長のためのDXを共に実現します。';
+
+            // Catch Copies
+            const copy1 = `${d.loc}から、${d.future || '企業の未来'}を創る。${d.name}です。`;
+            const copy2 = `${targetCall}\n${strList}で、あなたの事業を加速させます。`;
+            const copy3 = `${d.val}を大切に。${d.biz}ならお任せください。`;
+
+            // Intro Text
+            const intro = `${d.name}は、${d.loc}を拠点に${d.biz}を展開しています。\n\n創業以来、「${d.why}」という想いで活動を続けてきました。私たちの強みは${strList}です。\n\n${targetCall}お客様のパートナーとして、${d.future || '共に歩みを進めて'}まいります。`;
+
+            return [
+                { title: 'トップページ用キャッチコピー A', text: copy1 },
+                { title: 'トップページ用キャッチコピー B', text: copy2 },
+                { title: '会社紹介文 (About Us)', text: intro },
+                { title: '強みの箇条書き', text: d.str.map(s => `・${s}`).join('\n') }
+            ];
+        }
+
+        function genSales(d) {
+            let opening = '';
+            if (currentTone === 'polite') opening = `お世話になっております。${d.name}です。`;
+            else if (currentTone === 'passion') opening = `お世話になります！${d.name}です！`;
+            else opening = `こんにちは、${d.name}です。`;
+
+            let pain = '';
+            if(d.target === 'ceo') pain = '経営課題の解決や、将来への投資についてお悩みではありませんか？';
+            if(d.target === 'legacy') pain = '業務のデジタル化を進めたいけれど、何から始めればいいか分からない…ということはありませんか？';
+
+            const talk30 = `${opening}\n\n私たちは${d.loc}で${d.biz}を行っています。\n特に${d.str[0] || 'サポート体制'}には自信があり、${d.case || '多くのお客様'}にご評価いただいています。\n\n${pain}\nもしよろしければ、一度資料だけでもご覧いただけないでしょうか。`;
+
+            const email = `${opening}\n\n貴社のWebサイトを拝見し、ご連絡いたしました。\n\n弊社は${d.biz}を専門としており、特に「${d.val}」という価値観を大切にしています。\n\nこれまでに${d.case}といった実績がございます。\n\n${d.str.join('、')}といった強みを活かし、貴社のお役に立てるのではないかと考えました。\n\n詳細な事例資料もございますので、一度情報交換のお時間をいただけないでしょうか。\n\n--------------------------------\n${d.sign}\n${d.url}\n--------------------------------`;
+
+            return [
+                { title: '30秒エレベーターピッチ', text: talk30 },
+                { title: '初回アプローチメール', text: email },
+                { title: '問い合わせ返信', text: `${opening}\nこの度は、お問い合わせいただき誠にありがとうございます。\n\nご質問いただいた件につきまして、以下の通り回答いたします。\n\n（ここに回答を入力）\n\n私たちの強みである「${d.str[0] || '対応力'}」を活かし、貴社の課題解決に貢献できれば幸いです。\n引き続きよろしくお願いいたします。\n\n--------------------------------\n${d.sign}` }
+            ];
+        }
+
+        function genExhibition(d) {
+            return [
+                { title: 'パネル・ポスター見出し', text: `【${d.str[0] || '解決策'}】${d.biz}なら${d.name}へ` },
+                { title: '来場者に刺さる一言 (POP)', text: d.target === 'legacy' ? '「ITが苦手」でも大丈夫！' : 'その経営課題、3分で診断！' },
+                { title: 'チラシ用リード文', text: `もう一人で悩まないでください。\n${d.loc}の${d.name}が、あなたの会社の「${d.val}」を守ります。\n\n実績：${d.case}` },
+                { title: 'QRコード誘導', text: '詳細事例・ノウハウ集はこちらからスマホでチェック▼' }
+            ];
+        }
+
+        function genSNS(d) {
+            const tags = `#${d.name.replace(/\s+/g, '')} #${d.loc} #中小企業支援 #${d.biz.split('、')[0]}`;
+            
+            const toneEnd = t('です。', 'だ！', 'ですね✨');
+            const emoji = t('🙇‍♂️', '🔥', '😊');
+
+            const post1 = `【事例紹介】\n${d.case}\n\nお客様から「ありがとう」と言っていただけるのが一番のやりがい${toneEnd}\n\n私たちの強みは${d.str[0] || 'これ'}です。お困りの際はお気軽にご相談ください${emoji}\n\n${tags}`;
+            
+            const post2 = `【${d.name}の想い】\nなぜこの仕事をしているのか？\nそれは「${d.why}」だから${toneEnd}\n\n${d.future || 'より良い未来'}を目指して、今日も走ります${emoji}\n\n${d.url}\n${tags}`;
+
+            return [
+                { title: '実績紹介投稿', text: post1 },
+                { title: '想い・ストーリー発信', text: post2 },
+                { title: '豆知識・お役立ち', text: `【知って得する豆知識】\n業界でよくある誤解について解説します${emoji}\n\n（ここにノウハウを記入）\n\n実は…${d.val}が重要なんです${toneEnd}\n\n${tags}` }
+            ];
+        }
+
+        function genSDGs(d) {
+            const goals = d.sdgs.map(n => `ゴール${n}`).join('、');
+            
+            const web = `${d.name}は、SDGs（持続可能な開発目標）の達成に貢献します。\n\n特に「${goals}」を重要課題と捉え、事業を通じて「${d.future}」を実現します。\n具体的な取り組みとして、${d.biz}を通じた地域企業の持続化支援を行っています。`;
+
+            const talk = `弊社はSDGsにも力を入れておりまして、特に${goals}番に取り組んでいます。\n${d.future}を目指して、お客様と一緒に社会課題の解決に取り組んでいければと考えています。`;
+
+            return [
+                { title: 'Web掲載用 SDGs宣言', text: web },
+                { title: '営業トーク用 SDGsアピール', text: talk },
+                { title: '行政・入札用 説明文', text: `【SDGsへの取り組み方針】\n当社は、${d.biz}を通じて持続可能な社会の実現に寄与します。\n重点目標：${goals}\n\n具体的には、${d.str.join('、')}といった強みを活かし、地域経済の活性化と雇用の維持（ゴール8）に貢献しています。` }
+            ];
+        }
+
+        // --- Rendering ---
+        function createCard(item, ngList) {
+            const ngFound = checkNG(item.text, ngList);
+            let ngHtml = '';
+            if (ngFound.length > 0) {
+                ngHtml = `<div class="mt-2 p-3 bg-red-50 border border-red-100 rounded-lg text-sm text-red-700 flex flex-wrap items-start">
+                    <i data-lucide="alert-triangle" class="h-4 w-4 mr-1.5 mt-0.5 flex-shrink-0"></i>
+                    <span class="flex-1 leading-relaxed">注意：誇大表現の可能性があります（${ngFound.map(w => `<span class="font-bold underline">${w}</span>`).join(', ')}）</span>
+                </div>`;
+            }
+
+            return `
+            <div class="bg-white dark:bg-slate-800 rounded-xl p-5 card-shadow border border-slate-100 dark:border-slate-700">
+                <div class="flex justify-between items-center mb-2">
+                    <h3 class="font-bold text-slate-700 dark:text-slate-200 text-sm flex items-center gap-2">
+                        <span class="w-1 h-4 bg-brand-500 rounded-full inline-block"></span>
+                        ${item.title}
+                    </h3>
+                    <button onclick="copyToClipboard(this)" class="text-xs text-brand-600 dark:text-brand-400 font-bold hover:bg-brand-50 dark:hover:bg-slate-700 px-2 py-1 rounded transition flex items-center gap-1">
+                        <i data-lucide="copy" class="h-3 w-3"></i> コピー
+                    </button>
+                </div>
+                <textarea readonly class="w-full bg-slate-50 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-600 rounded-lg p-3 text-sm focus:outline-none resize-none overflow-hidden h-auto leading-relaxed auto-resize" style="min-height: 80px;">${item.text}</textarea>
+                ${ngHtml}
+            </div>
+            `;
+        }
+
+        // --- Improved Textarea Height Adjustment ---
+        function adjustTextareaHeight(el) {
+            if(!el) return;
+            el.style.height = 'auto';
+            el.style.height = (el.scrollHeight + 5) + 'px';
+        }
+
+        // --- Added Helper for Presets ---
+        function applyPreset(targetId, value) {
+            if (!value) return;
+            const target = document.getElementById(targetId);
+            target.value = value;
+            generateAll(); // Save and Generate
+            
+            // Adjust height
+            target.style.height = 'auto';
+            target.style.height = (target.scrollHeight + 5) + 'px';
+        }
+
+        function renderOutput(data) {
+            const container = document.getElementById('outputContainer');
+            let content = [];
+            
+            if (currentTab === 'web') content = genWeb(data);
+            else if (currentTab === 'sales') content = genSales(data);
+            else if (currentTab === 'exhibition') content = genExhibition(data);
+            else if (currentTab === 'sns') content = genSNS(data);
+            else if (currentTab === 'sdgs') content = genSDGs(data);
+
+            container.innerHTML = content.map(item => createCard(item, data.ngList)).join('');
+            
+            // Re-init icons for new content
+            lucide.createIcons();
+            
+            // Initial Height Adjustment with robust delay
+            setTimeout(() => {
+                document.querySelectorAll('.auto-resize').forEach(adjustTextareaHeight);
+            }, 10);
+            
+            // Add input listeners for real-time resizing (though these are readonly, good practice)
+            document.querySelectorAll('.auto-resize').forEach(tx => {
+                tx.addEventListener('input', function() { adjustTextareaHeight(this); });
+            });
+        }
+
+        function generateAll() {
+            saveData();
+            const data = getInputs();
+            renderOutput(data);
+        }
+
+        // --- Improved Tab Switching with Data Attributes ---
+        function switchTab(tabName) {
+            currentTab = tabName;
+            
+            // Reset all tabs
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('tab-active');
+                btn.classList.add('tab-inactive');
+            });
+            
+            // Active current tab safely using data attribute
+            const activeBtn = document.querySelector(`.tab-btn[data-tab="${tabName}"]`);
+            if (activeBtn) {
+                activeBtn.classList.add('tab-active');
+                activeBtn.classList.remove('tab-inactive');
+            }
+            
+            generateAll();
+        }
+
+        function setTone(tone) {
+            currentTone = tone;
+            document.querySelectorAll('.tone-btn').forEach(btn => {
+                btn.classList.remove('active-tone', 'bg-white', 'text-brand-600', 'shadow-sm', 'dark:bg-slate-700', 'dark:text-white');
+                btn.classList.add('text-slate-500');
+            });
+            
+            const activeBtn = document.querySelector(`.tone-btn[data-tone="${tone}"]`);
+            activeBtn.classList.remove('text-slate-500');
+            activeBtn.classList.add('active-tone', 'bg-white', 'text-brand-600', 'shadow-sm', 'dark:bg-slate-700', 'dark:text-white');
+            
+            generateAll();
+        }
+
+        // --- Utilities ---
+        function copyToClipboard(btn) {
+            const text = btn.parentElement.nextElementSibling.value;
+            navigator.clipboard.writeText(text).then(() => {
+                const toast = document.getElementById('toast');
+                toast.classList.add('show');
+                setTimeout(() => toast.classList.remove('show'), 2000);
+            }).catch(err => {
+                console.error('Copy failed', err);
+            });
+        }
+
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+            // Save preference could be added here
+        }
+
+        function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
+        function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+        function openSettings() { openModal('settingsModal'); }
+        function openHelp() { openModal('helpModal'); }
+        function saveSettings() { saveData(); generateAll(); }
+
+        // --- Event Listeners ---
+        window.addEventListener('load', loadData);
+        
+        // Auto-save & Regenerate on input change
+        document.querySelectorAll('input, textarea').forEach(el => {
+            el.addEventListener('blur', generateAll);
+        });
+        document.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(el => {
+            el.addEventListener('change', generateAll);
+        });
+        
+        // Window resize event to adjust textarea height
+        window.addEventListener('resize', () => {
+             document.querySelectorAll('.auto-resize').forEach(adjustTextareaHeight);
+        });
+
+    </script>
+</body>
+</html>
