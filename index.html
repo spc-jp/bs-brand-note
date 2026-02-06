@@ -177,15 +177,16 @@
                 <button onclick="openHelp()" class="p-2 rounded-full hover:bg-white/10 transition text-white/90 hover:text-white" title="使い方">
                     <i data-lucide="help-circle" class="h-5 w-5"></i>
                 </button>
-                <button onclick="openSettings()" class="flex items-center gap-1 bg-white/10 hover:bg-white/20 text-white px-3 py-1.5 rounded-full transition text-xs font-bold" title="設定・基本情報">
-                    <i data-lucide="settings" class="h-4 w-4"></i> 設定・基本情報
+                <button onclick="openSettings()" class="p-2 rounded-full hover:bg-white/10 transition text-white/90 hover:text-white" title="設定・基本情報">
+                    <i data-lucide="settings" class="h-5 w-5"></i>
                 </button>
             </div>
         </div>
     </header>
 
     <!-- Main Content -->
-    <main class="flex-grow max-w-[1600px] w-full mx-auto p-4 sm:p-6 lg:p-8 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 h-[calc(100vh-4rem)] overflow-hidden">
+    <!-- Modified height calculation to account for footer (100vh - 4rem header - 2rem footer = 6rem) -->
+    <main class="flex-grow max-w-[1600px] w-full mx-auto p-4 sm:p-6 lg:p-8 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 h-[calc(100vh-6rem)] overflow-hidden">
         
         <!-- Left Column: Inputs (Improved Scroll) -->
         <section class="lg:col-span-5 flex flex-col gap-6 lg:h-full lg:overflow-y-auto custom-scrollbar pr-2 pb-24">
@@ -193,7 +194,7 @@
                 <h2 class="text-xl font-bold flex items-center gap-2 text-brand-700 dark:text-brand-400">
                     <i data-lucide="pen-tool" class="h-5 w-5"></i> 思考の整理（入力）
                 </h2>
-                <!-- Removed Status from here -->
+                <div class="text-xs text-slate-500 font-medium" id="saveStatus">自動保存中...</div>
             </div>
 
             <!-- Tone Selector -->
@@ -386,6 +387,11 @@
         </section>
     </main>
 
+    <!-- Footer -->
+    <footer class="flex-none h-8 bg-slate-100 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 flex items-center justify-center text-[10px] text-slate-400">
+        テスト版（ベータ版） © 2026 SPC
+    </footer>
+
     <!-- Toast Notification -->
     <div id="toast" class="toast shadow-xl">
         <div class="flex items-center justify-center gap-2">
@@ -477,7 +483,7 @@
                     <div class="bg-brand-100 text-brand-600 font-bold w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0">1</div>
                     <div>
                         <h4 class="font-bold text-slate-800 dark:text-white mb-1">基本情報をご登録ください</h4>
-                        <p class="leading-relaxed">画面右上の「設定・基本情報」ボタンより、貴社の基本情報（社名や事業内容など）をご入力ください。</p>
+                        <p class="leading-relaxed">画面右上の「<i data-lucide="settings" class="h-3 w-3 inline"></i>」ボタン（設定）より、貴社の基本情報（社名や事業内容など）をご入力ください。</p>
                     </div>
                 </div>
                 <div class="flex gap-4">
