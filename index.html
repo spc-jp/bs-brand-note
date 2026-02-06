@@ -170,15 +170,15 @@
                     <p class="text-[10px] text-brand-100 opacity-90 leading-tight">社長の想いを、事業の武器に。</p>
                 </div>
             </div>
-            <div class="flex items-center gap-3">
-                <button onclick="toggleDarkMode()" class="p-2 rounded-full hover:bg-white/10 transition" title="ダークモード切替">
+            <div class="flex items-center gap-2">
+                <button onclick="toggleDarkMode()" class="p-2 rounded-full hover:bg-white/10 transition text-white/90 hover:text-white" title="ダークモード">
                     <i data-lucide="moon" class="h-5 w-5"></i>
                 </button>
-                <button onclick="openSettings()" class="flex items-center gap-1 bg-white/10 hover:bg-white/20 text-white px-3 py-1.5 rounded-full transition text-xs font-bold" title="設定">
-                    <i data-lucide="settings" class="h-4 w-4"></i> 設定・基本情報
+                <button onclick="openHelp()" class="p-2 rounded-full hover:bg-white/10 transition text-white/90 hover:text-white" title="使い方">
+                    <i data-lucide="help-circle" class="h-5 w-5"></i>
                 </button>
-                <button onclick="openHelp()" class="hidden sm:flex bg-accent-500 hover:bg-amber-600 text-white text-xs font-bold py-2 px-4 rounded-full transition items-center gap-1 shadow-md">
-                    <i data-lucide="help-circle" class="h-4 w-4"></i> 使い方
+                <button onclick="openSettings()" class="flex items-center gap-1 bg-white/10 hover:bg-white/20 text-white px-3 py-1.5 rounded-full transition text-xs font-bold" title="設定・基本情報">
+                    <i data-lucide="settings" class="h-4 w-4"></i> 設定・基本情報
                 </button>
             </div>
         </div>
@@ -188,13 +188,12 @@
     <main class="flex-grow max-w-[1600px] w-full mx-auto p-4 sm:p-6 lg:p-8 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 h-[calc(100vh-4rem)] overflow-hidden">
         
         <!-- Left Column: Inputs (Improved Scroll) -->
-        <!-- Changed to h-full relative to main container, added custom-scrollbar class -->
         <section class="lg:col-span-5 flex flex-col gap-6 lg:h-full lg:overflow-y-auto custom-scrollbar pr-2 pb-24">
             <div class="flex justify-between items-center mb-1 sticky top-0 bg-slate-50 dark:bg-slate-900 z-10 py-2">
                 <h2 class="text-xl font-bold flex items-center gap-2 text-brand-700 dark:text-brand-400">
                     <i data-lucide="pen-tool" class="h-5 w-5"></i> 思考の整理（入力）
                 </h2>
-                <div class="text-xs text-slate-500 font-medium" id="saveStatus">自動保存中...</div>
+                <!-- Removed Status from here -->
             </div>
 
             <!-- Tone Selector -->
@@ -346,9 +345,18 @@
                 </div>
             </details>
 
-            <button onclick="generateAll()" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-4 px-6 rounded-xl shadow-lg shadow-brand-500/30 transition transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2 mt-4 lg:hidden flex-shrink-0">
-                <i data-lucide="wand-2" class="h-5 w-5"></i> 内容を反映して生成
+            <!-- Save Status moved here -->
+            <div class="text-xs text-slate-400 font-medium text-center mb-1 transition-opacity duration-300 min-h-[1em]" id="saveStatus"></div>
+
+            <button onclick="generateAll()" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-4 px-6 rounded-xl shadow-lg shadow-brand-500/30 transition transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2 flex-shrink-0">
+                <i data-lucide="wand-2" class="h-5 w-5"></i> 保存して生成
             </button>
+
+            <!-- Demo Buttons -->
+            <div class="mt-4 pt-4 border-t border-slate-200 dark:border-slate-700 flex justify-center gap-4 text-[10px] text-slate-400">
+                <button onclick="loadDemoData()" class="hover:text-brand-500 hover:underline transition">デモデータを入力</button>
+                <button onclick="clearAllData()" class="hover:text-red-500 hover:underline transition">デモデータクリア</button>
+            </div>
         </section>
 
         <!-- Right Column: Outputs -->
@@ -365,9 +373,9 @@
             <!-- Tabs -->
             <div class="flex overflow-x-auto space-x-2 bg-slate-100 dark:bg-slate-800 p-2 rounded-xl mb-6 items-center flex-shrink-0 custom-scrollbar pb-3">
                 <button data-tab="web" class="tab-btn tab-active shrink-0 py-3 px-4 text-sm rounded-lg transition-all duration-200 text-center whitespace-nowrap" onclick="switchTab('web')">Web・HP用</button>
+                <button data-tab="sns" class="tab-btn tab-inactive shrink-0 py-3 px-4 text-sm rounded-lg transition-all duration-200 text-center whitespace-nowrap" onclick="switchTab('sns')">SNS投稿</button>
                 <button data-tab="sales" class="tab-btn tab-inactive shrink-0 py-3 px-4 text-sm rounded-lg transition-all duration-200 text-center whitespace-nowrap" onclick="switchTab('sales')">営業トーク</button>
                 <button data-tab="exhibition" class="tab-btn tab-inactive shrink-0 py-3 px-4 text-sm rounded-lg transition-all duration-200 text-center whitespace-nowrap" onclick="switchTab('exhibition')">展示会・チラシ</button>
-                <button data-tab="sns" class="tab-btn tab-inactive shrink-0 py-3 px-4 text-sm rounded-lg transition-all duration-200 text-center whitespace-nowrap" onclick="switchTab('sns')">SNS投稿</button>
                 <button data-tab="sdgs" class="tab-btn tab-inactive shrink-0 py-3 px-4 text-sm rounded-lg transition-all duration-200 text-center whitespace-nowrap" onclick="switchTab('sdgs')">SDGs宣言</button>
             </div>
 
@@ -428,8 +436,12 @@
                             <input type="text" id="setting_url" class="w-full bg-slate-50 dark:bg-slate-900 border rounded p-2 text-sm" placeholder="https://example.com">
                         </div>
                         <div>
+                            <label class="block text-xs font-bold text-slate-500 mb-1">GoogleマップURL</label>
+                            <input type="text" id="setting_mapUrl" class="w-full bg-slate-50 dark:bg-slate-900 border rounded p-2 text-sm" placeholder="https://maps.app.goo.gl/...">
+                        </div>
+                        <div>
                             <label class="block text-xs font-bold text-slate-500 mb-1">NGワード設定（カンマ区切り）</label>
-                            <textarea id="setting_ng" class="w-full bg-slate-50 dark:bg-slate-900 border rounded p-2 text-sm h-20">絶対,No.1,必ず,100%,業界初,完璧,唯一</textarea>
+                            <textarea id="setting_ng" class="w-full bg-slate-50 dark:bg-slate-900 border rounded p-2 text-sm h-20">絶対,No.1,必ず,業界初,完璧,唯一</textarea>
                             <p class="text-[10px] text-red-500 mt-1">※誇大広告防止のため、これらの単語が含まれると警告を表示します。</p>
                         </div>
                     </div>
@@ -449,26 +461,37 @@
                 <h3 class="text-lg font-bold flex items-center gap-2"><i data-lucide="book-open" class="h-5 w-5 text-accent-500"></i> 使い方 3ステップ</h3>
                 <button onclick="closeModal('helpModal')" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="h-6 w-6"></i></button>
             </div>
-            <div class="space-y-4 text-sm text-slate-600 dark:text-slate-300">
-                <div class="flex gap-3">
+            
+            <!-- Purpose Section -->
+            <div class="bg-brand-50 dark:bg-brand-900/30 p-4 rounded-xl mb-6 border border-brand-100 dark:border-brand-800">
+                <h4 class="text-brand-800 dark:text-brand-300 font-bold mb-2 flex items-center gap-2 text-sm">
+                    <i data-lucide="target" class="h-4 w-4"></i> アプリの目的
+                </h4>
+                <p class="text-brand-700 dark:text-brand-400 leading-relaxed text-sm">
+                    本アプリは、経営者様の内に秘めた「熱い想い」や企業の「独自の強み」を言語化し、Webサイト・営業活動・SNS発信などで即戦力となる言葉へと変換する『事業資産化ツール』でございます。
+                </p>
+            </div>
+
+            <div class="space-y-6 text-sm text-slate-600 dark:text-slate-300">
+                <div class="flex gap-4">
                     <div class="bg-brand-100 text-brand-600 font-bold w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0">1</div>
                     <div>
-                        <h4 class="font-bold text-slate-800 dark:text-white">まずは基本情報を設定</h4>
-                        <p>右上の「設定・基本情報」ボタンから、会社名や事業内容を入力してください。</p>
+                        <h4 class="font-bold text-slate-800 dark:text-white mb-1">基本情報をご登録ください</h4>
+                        <p class="leading-relaxed">画面右上の「設定・基本情報」ボタンより、貴社の基本情報（社名や事業内容など）をご入力ください。</p>
                     </div>
                 </div>
-                <div class="flex gap-3">
+                <div class="flex gap-4">
                     <div class="bg-brand-100 text-brand-600 font-bold w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0">2</div>
                     <div>
-                        <h4 class="font-bold text-slate-800 dark:text-white">左側で思考を整理</h4>
-                        <p>社長の想い、強み、ターゲットなどを左側のエリアに入力していきます。</p>
+                        <h4 class="font-bold text-slate-800 dark:text-white mb-1">想いや強みを整理・入力します</h4>
+                        <p class="leading-relaxed">画面左側の入力エリアにて、経営に対する想い、自社の強み、ターゲット層などについて、問いかけに答える形でご入力ください。</p>
                     </div>
                 </div>
-                <div class="flex gap-3">
+                <div class="flex gap-4">
                     <div class="bg-brand-100 text-brand-600 font-bold w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0">3</div>
                     <div>
-                        <h4 class="font-bold text-slate-800 dark:text-white">自動生成＆コピー</h4>
-                        <p>入力内容に応じて右側に文章が生成されます。タブを切り替えて用途に合った文章をコピーしましょう。</p>
+                        <h4 class="font-bold text-slate-800 dark:text-white mb-1">文章を生成し、活用します</h4>
+                        <p class="leading-relaxed">入力内容に基づき、画面右側に用途別の文章が自動生成されます。目的に合った文章を選び、コピーしてWebサイトやSNS等でご活用ください。</p>
                     </div>
                 </div>
             </div>
@@ -485,7 +508,7 @@
         
         const defaultData = {
             companyName: '株式会社ビジネスサポート',
-            location: '東京都',
+            location: '〒336-0017 埼玉県さいたま市南区南浦和３丁目４４−１８',
             business: '中小企業支援、経営コンサルティング',
             story_why: '素晴らしい技術を持つ中小企業が、伝え方を知らないだけで損をしている現状を変えたい。',
             values: '「伴走」と「実利」',
@@ -497,8 +520,9 @@
             case_study: '赤字続きだった製造業が、工程見直しによりV字回復を達成。',
             settings: {
                 sign: '株式会社ビジネスサポート',
-                url: '',
-                ng: '絶対,No.1,必ず,100%,業界初,完璧,唯一'
+                url: 'https://bs-saitama.jp/',
+                mapUrl: 'https://maps.app.goo.gl/UGs9YNetsSM7ELRk8',
+                ng: '絶対,No.1,必ず,業界初,完璧,唯一'
             }
         };
 
@@ -537,11 +561,17 @@
                 if (data.settings) {
                     document.getElementById('setting_sign').value = data.settings.sign || '';
                     document.getElementById('setting_url').value = data.settings.url || '';
+                    document.getElementById('setting_mapUrl').value = data.settings.mapUrl || '';
                     document.getElementById('setting_ng').value = data.settings.ng || '';
                 }
             } else {
                 // Load defaults if empty
                 document.getElementById('input_companyName').value = defaultData.companyName;
+                document.getElementById('input_location').value = defaultData.location;
+                document.getElementById('input_business').value = defaultData.business;
+                document.getElementById('setting_url').value = defaultData.settings.url;
+                document.getElementById('setting_mapUrl').value = defaultData.settings.mapUrl;
+                
                 generateAll(); // Initial Gen
             }
         }
@@ -566,6 +596,7 @@
                 settings: {
                     sign: document.getElementById('setting_sign').value,
                     url: document.getElementById('setting_url').value,
+                    mapUrl: document.getElementById('setting_mapUrl').value,
                     ng: document.getElementById('setting_ng').value
                 }
             };
@@ -575,7 +606,8 @@
             // Show saving status
             const status = document.getElementById('saveStatus');
             status.textContent = '保存しました';
-            setTimeout(() => status.textContent = '自動保存中...', 2000);
+            status.classList.remove('opacity-0');
+            setTimeout(() => status.classList.add('opacity-0'), 2000);
         }
 
         // --- Logic: Generator Core ---
@@ -606,6 +638,7 @@
                 case: document.getElementById('input_case').value,
                 sign: document.getElementById('setting_sign').value,
                 url: document.getElementById('setting_url').value,
+                mapUrl: document.getElementById('setting_mapUrl').value,
                 ngList: document.getElementById('setting_ng').value.split(',').map(s => s.trim()).filter(s => s)
             };
         }
@@ -635,7 +668,11 @@
             const copy3 = `${d.val}を大切に。${d.biz}ならお任せください。`;
 
             // Intro Text
-            const intro = `${d.name}は、${d.loc}を拠点に${d.biz}を展開しています。\n\n創業以来、「${d.why}」という想いで活動を続けてきました。私たちの強みは${strList}です。\n\n${targetCall}お客様のパートナーとして、${d.future || '共に歩みを進めて'}まいります。`;
+            let intro = `${d.name}は、${d.loc}を拠点に${d.biz}を展開しています。\n\n創業以来、「${d.why}」という想いで活動を続けてきました。私たちの強みは${strList}です。\n\n${targetCall}お客様のパートナーとして、${d.future || '共に歩みを進めて'}まいります。`;
+            
+            if (d.mapUrl) {
+                intro += `\n\nアクセス: ${d.mapUrl}`;
+            }
 
             return [
                 { title: 'トップページ用キャッチコピー A', text: copy1 },
@@ -657,7 +694,12 @@
 
             const talk30 = `${opening}\n\n私たちは${d.loc}で${d.biz}を行っています。\n特に${d.str[0] || 'サポート体制'}には自信があり、${d.case || '多くのお客様'}にご評価いただいています。\n\n${pain}\nもしよろしければ、一度資料だけでもご覧いただけないでしょうか。`;
 
-            const email = `${opening}\n\n貴社のWebサイトを拝見し、ご連絡いたしました。\n\n弊社は${d.biz}を専門としており、特に「${d.val}」という価値観を大切にしています。\n\nこれまでに${d.case}といった実績がございます。\n\n${d.str.join('、')}といった強みを活かし、貴社のお役に立てるのではないかと考えました。\n\n詳細な事例資料もございますので、一度情報交換のお時間をいただけないでしょうか。\n\n--------------------------------\n${d.sign}\n${d.url}\n--------------------------------`;
+            let email = `${opening}\n\n貴社のWebサイトを拝見し、ご連絡いたしました。\n\n弊社は${d.biz}を専門としており、特に「${d.val}」という価値観を大切にしています。\n\nこれまでに${d.case}といった実績がございます。\n\n${d.str.join('、')}といった強みを活かし、貴社のお役に立てるのではないかと考えました。\n\n詳細な事例資料もございますので、一度情報交換のお時間をいただけないでしょうか。\n\n--------------------------------\n${d.sign}\n${d.url}`;
+            
+            if (d.mapUrl) {
+                email += `\nMap: ${d.mapUrl}`;
+            }
+            email += `\n--------------------------------`;
 
             return [
                 { title: '30秒エレベーターピッチ', text: talk30 },
@@ -677,19 +719,41 @@
 
         function genSNS(d) {
             const tags = `#${d.name.replace(/\s+/g, '')} #${d.loc} #中小企業支援 #${d.biz.split('、')[0]}`;
-            
+            const mapLink = d.mapUrl ? `\n\n📍アクセス\n${d.mapUrl}` : '';
             const toneEnd = t('です。', 'だ！', 'ですね✨');
             const emoji = t('🙇‍♂️', '🔥', '😊');
 
-            const post1 = `【事例紹介】\n${d.case}\n\nお客様から「ありがとう」と言っていただけるのが一番のやりがい${toneEnd}\n\n私たちの強みは${d.str[0] || 'これ'}です。お困りの際はお気軽にご相談ください${emoji}\n\n${tags}`;
-            
-            const post2 = `【${d.name}の想い】\nなぜこの仕事をしているのか？\nそれは「${d.why}」だから${toneEnd}\n\n${d.future || 'より良い未来'}を目指して、今日も走ります${emoji}\n\n${d.url}\n${tags}`;
+            // Google Maps (Business Profile)
+            const googleMap = `【お知らせ】${d.case}\n\n${d.name}です。\nお客様より嬉しいお声をいただきました。\n\n私たちは${d.loc}で${d.biz}を行っています。\n「${d.val}」を大切に、${d.str[0] || '地域'}の皆様をサポートします。\n\nお困りの際はぜひご相談ください。${mapLink}`;
 
-            return [
-                { title: '実績紹介投稿', text: post1 },
-                { title: '想い・ストーリー発信', text: post2 },
-                { title: '豆知識・お役立ち', text: `【知って得する豆知識】\n業界でよくある誤解について解説します${emoji}\n\n（ここにノウハウを記入）\n\n実は…${d.val}が重要なんです${toneEnd}\n\n${tags}` }
+            // Facebook (Storytelling, polite)
+            const fb = `【${d.name}の想い】\nこんにちは、${d.name}です。\n\n私たちは創業以来、「${d.why}」という想いで${d.loc}の皆様と共に歩んできました。\n\n最近では、${d.case}といった事例も増えています。\n\n私たちが大切にしているのは「${d.val}」です。\nこれからも${d.future || '地域社会'}に貢献できるよう尽力してまいります。\n\n詳しくはこちら：\n${d.url}\n${tags}`;
+
+            // Instagram (Visual, emotional, hashtags)
+            const insta = `【事例紹介】${d.case}${emoji}\n.\nお客様の笑顔が私たちの原動力です✨\n.\n${d.name}の強みは「${d.str[0] || '対応力'}」！\n「${d.val}」をモットーに、${d.loc}で活動中💨\n.\n気になった方はプロフィールのリンクをチェック👀\n👇\n@（アカウント名）\n.\n${tags} #経営者 #企業公式 #ビジネス`;
+
+            // X (Twitter) (Short, conclusion first)
+            const x = `【実績】${d.case}\n\n実は「${d.str[0] || 'これ'}」が私たちの強みなんです${toneEnd}\n\n${d.loc}で${d.biz}なら${d.name}へ！\n「${d.val}」の精神でサポートします${emoji}\n\n詳細はこちら👇\n${d.url}\n${tags}`;
+
+            // LINE (Friendly, direct action)
+            const line = `こんにちは！${d.name}です${emoji}\n\n${d.loc}の事業者様へ、こんなお悩みありませんか？\n\n✅ ${d.case}\n\n私たちは${d.str.join('、')}で解決をサポートします！\n\nまずは「${d.val}」の精神で、お話をお聞きします。\n\n👇無料相談はこちらから\n（LINEのボタンやリッチメニューへ誘導）`;
+
+            const items = [
+                { title: 'Googleマップ (最新情報)', text: googleMap },
+                { title: 'Facebook (信頼構築)', text: fb },
+                { title: 'Instagram (共感・認知)', text: insta },
+                { title: 'X / Twitter (拡散・速報)', text: x },
+                { title: 'LINE公式 (ファン化)', text: line }
             ];
+
+            // Added Banner Item
+            items.push({
+                title: '画像・動画素材フォルダ',
+                text: '画像：外観、内観、お客様\n動画：外観、内観、お客様',
+                type: 'folder'
+            });
+
+            return items;
         }
 
         function genSDGs(d) {
@@ -708,6 +772,30 @@
 
         // --- Rendering ---
         function createCard(item, ngList) {
+            // Special rendering for Folder Banner
+            if (item.type === 'folder') {
+                return `
+                <div class="bg-brand-50 dark:bg-slate-800 rounded-xl p-4 border-2 border-dashed border-brand-300 dark:border-slate-600 hover:bg-brand-100 dark:hover:bg-slate-700 transition cursor-pointer group" onclick="openAssetFolder()">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="bg-brand-500 text-white p-3 rounded-lg">
+                                <i data-lucide="folder-open" class="h-6 w-6"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-brand-700 dark:text-brand-300 text-base">画像・動画ホルダー</h3>
+                                <p class="text-xs text-brand-600 dark:text-slate-400 mt-1">クリックして素材を確認</p>
+                            </div>
+                        </div>
+                        <i data-lucide="chevron-right" class="h-5 w-5 text-brand-400 group-hover:translate-x-1 transition"></i>
+                    </div>
+                    <div class="mt-3 pl-14 text-sm text-slate-600 dark:text-slate-300 space-y-1">
+                        <div class="flex items-center gap-2"><i data-lucide="image" class="h-4 w-4"></i> 画像：外観、内観、お客様</div>
+                        <div class="flex items-center gap-2"><i data-lucide="film" class="h-4 w-4"></i> 動画：外観、内観、お客様</div>
+                    </div>
+                </div>
+                `;
+            }
+
             const ngFound = checkNG(item.text, ngList);
             let ngHtml = '';
             if (ngFound.length > 0) {
@@ -751,6 +839,83 @@
             // Adjust height
             target.style.height = 'auto';
             target.style.height = (target.scrollHeight + 5) + 'px';
+        }
+
+        function openAssetFolder() {
+            // Placeholder action for opening folder
+            alert('【画像・動画ホルダー】\n実際の運用では、ここにGoogle DriveやDropbox、社内サーバーへのリンクを設定します。\n\n例：\n・外観写真\n・内観写真\n・お客様インタビュー動画');
+        }
+
+        function loadDemoData() {
+            // Fill with Business Support Demo Data
+            document.getElementById('input_companyName').value = '株式会社ビジネスサポート';
+            document.getElementById('input_location').value = '埼玉県さいたま市南区南浦和３丁目４４−１８';
+            document.getElementById('input_business').value = '中小企業向けIT導入支援・経営コンサルティング・補助金申請サポート';
+            
+            document.getElementById('input_story_why').value = '「お客様支援を主願とし、お客様の発展に無限のお役立ちを図る」\nこれが創業以来の変わらぬ想いです。\nIT導入やDXは手段に過ぎません。その先にあるお客様の「満足」と、協業様との「共生」を実現し、地域社会と共に発展し続けることを目指しています。';
+            
+            document.getElementById('input_values').value = 'お客様の期待を超えたサービスで、常に感動を提供する';
+            
+            document.getElementById('input_strength_custom').value = '埼玉県内の中小企業に特化した、顔の見える距離感でのきめ細やかなDX支援';
+            
+            document.getElementById('input_sdgs_future').value = '地域企業の持続的な発展を支え、次世代に豊かな産業基盤を引き継ぐ（ゴール9：産業と技術革新）';
+            
+            document.getElementById('input_case').value = '【製造業DX事例】\nアナログ管理だった老舗工場様に生産管理システムを導入。\n現場への丁寧なヒアリングと「ものづくり補助金」の活用により、初期コストを抑えつつ、月間40時間の事務作業削減と納期遵守率100%を達成しました。';
+            
+            // Check boxes based on strengths
+            document.querySelectorAll('.strength-check').forEach(cb => cb.checked = false);
+            // Assuming order: 地域密着, 一貫対応, 初心者, スピード, 伴走型, 実績
+            const strengths = ['地域密着', '一貫対応', '伴走型', '実績豊富'];
+            document.querySelectorAll('.strength-check').forEach(cb => {
+                if(strengths.some(s => cb.parentElement.textContent.includes(s))) {
+                    cb.checked = true;
+                }
+            });
+            
+            // Check SDGs
+            document.querySelectorAll('.sdgs-check').forEach(cb => cb.checked = false);
+            // 8, 9, 17
+            const sdgVals = ['8', '9', '17'];
+            document.querySelectorAll('.sdgs-check').forEach(cb => {
+                if(sdgVals.includes(cb.value)) cb.checked = true;
+            });
+            
+            generateAll();
+            alert('株式会社ビジネスサポートのデモデータを入力しました');
+        }
+
+        function clearAllData() {
+            if(!confirm('入力内容をすべて消去しますか？\n（会社情報などの基本設定もクリアされます）')) return;
+            
+            // Clear inputs, but maybe we want to keep the default business support info? 
+            // The user said "Demo Data Clear", implying clearing the *demo* data.
+            // But usually clear means empty. I'll clear fields to empty to be safe, 
+            // or reset to defaultData if that's preferred.
+            // Let's clear to empty strings to let user start fresh.
+            
+            // However, the prompt said "Clear Demo Data".
+            // If I just clear inputs, it's a "Clear Form".
+            // If I reset to "Business Support" defaults, it's a "Reset".
+            // Let's assume "Clear" means empty fields for fresh input.
+            
+            // Wait, if I clear everything, the user loses their settings.
+            // Let's reset to the *Default Data* (Business Support) instead of empty?
+            // "Demo Data Clear" sounds like "Remove the demo data I just loaded".
+            // Since the app starts with Business Support data, I will reset to that.
+            
+            document.getElementById('input_companyName').value = defaultData.companyName;
+            document.getElementById('input_location').value = defaultData.location;
+            document.getElementById('input_business').value = defaultData.business;
+            document.getElementById('input_story_why').value = '';
+            document.getElementById('input_values').value = '';
+            document.getElementById('input_strength_custom').value = '';
+            document.getElementById('input_sdgs_future').value = '';
+            document.getElementById('input_case').value = '';
+            
+            document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+            
+            generateAll();
+            alert('データを初期状態（ビジネスサポート設定）に戻しました');
         }
 
         function renderOutput(data) {
